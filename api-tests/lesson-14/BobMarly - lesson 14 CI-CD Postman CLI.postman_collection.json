@@ -1,0 +1,451 @@
+{
+	"info": {
+		"_postman_id": "63c79fee-7e32-4d2a-a21f-155ea1373fba",
+		"name": "BobMarly - lesson 14 CI/CD Postman CLI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16757780"
+	},
+	"item": [
+		{
+			"name": "CRUD Todois",
+			"item": [
+				{
+					"name": "CREATE Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Your test color name\", function () {\r",
+									"    pm.expect(pm.response.json().color).to.eql(pm.collectionVariables.get(\"randomColor\"));\r",
+									"});\r",
+									"\r",
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"У відповіді є project id\", function () {\r",
+									"    pm.expect(jsonData).to.have.property(\"id\").that.is.a(\"string\");\r",
+									"\r",
+									"    // Зберігаємо project_id в змінну колекції\r",
+									"    pm.collectionVariables.set(\"project_id\", jsonData.id);\r",
+									"\r",
+									"    console.log(\"Project ID збережено:\", jsonData.id);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let colorList = [\"berry_red\", \"light_blue\", \"red\", \"blue\", \"orange\", \"grape\", \"yellow\", \"violet\", \"olive_green\", \"lavender\", \"lime_green\", \"magenta\", \"green\", \"salmon\", \"mint_green\", \"charcoal\", \"teal\", \"grey\", \"sky_blue\", \"taupe\"];\r",
+									"\r",
+									"if (colorList && colorList.length > 0) {\r",
+									"    const randomIndex = Math.floor(Math.random() * colorList.length);\r",
+									"    const randomColor = colorList[randomIndex];\r",
+									"    pm.collectionVariables.set(\"randomColor\", randomColor);\r",
+									"    console.log(\"Color:\", randomColor);\r",
+									"}\r",
+									"\r",
+									"// Функція для генерації випадкової назви проєкту\r",
+									"function randomProjectName(length) {\r",
+									"    let result = \"\";\r",
+									"    for (let i = 0; i < length; i++) {\r",
+									"        result += pm.variables.replaceIn(\"{{$randomAlphaNumeric}}\");\r",
+									"    }\r",
+									"    return result;\r",
+									"}\r",
+									"\r",
+									"const STRING_LEN = 30;\r",
+									"const name = randomProjectName(STRING_LEN);\r",
+									"pm.collectionVariables.set('randomProjectName', name);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{api_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-US,en;q=0.9"
+							},
+							{
+								"key": "authorization",
+								"value": "Bearer 3a4b2b6413c04c4175fc0f743a818a6b22b307ef"
+							},
+							{
+								"key": "cache-control",
+								"value": "no-cache"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							},
+							{
+								"key": "doist-locale",
+								"value": "en"
+							},
+							{
+								"key": "doist-os",
+								"value": "Windows"
+							},
+							{
+								"key": "doist-platform",
+								"value": "web"
+							},
+							{
+								"key": "doist-screen",
+								"value": "1536x824"
+							},
+							{
+								"key": "doist-version",
+								"value": "7922"
+							},
+							{
+								"key": "origin",
+								"value": "https://app.todoist.com"
+							},
+							{
+								"key": "pragma",
+								"value": "no-cache"
+							},
+							{
+								"key": "priority",
+								"value": "u=1, i"
+							},
+							{
+								"key": "referer",
+								"value": "https://app.todoist.com/app/project/test-tmp-e1a85c3a-d10a-45f3-b719-812e83d25617-7922-1744873733294"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Google Chrome\";v=\"135\", \"Not-A.Brand\";v=\"8\", \"Chromium\";v=\"135\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "same-origin"
+							},
+							{
+								"key": "todoist-partial-sync",
+								"value": "true"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36"
+							},
+							{
+								"key": "x-csrftoken",
+								"value": "1744873690968"
+							},
+							{
+								"key": "x-todoist-client-id",
+								"value": "3971b99c-c940-45eb-b3ca-81d40921619b"
+							},
+							{
+								"key": "x-todoist-webapp-version",
+								"value": "7922"
+							},
+							{
+								"key": "Cookie",
+								"value": "_ga=GA1.1.1289211329.1744666122; _rdt_uuid=1744666122935.1d4bb422-6251-4914-8da5-43726e1a2f2a; csrf=fbd8ba4d07e84894a7629d235191da5b; tduser=v4.public.eyJ1c2VyX2lkIjogNTM1MzY2MDAsICJleHAiOiAiMjAyNS0wNC0yOFQyMToyOTozNiswMDowMCJ9EZ77B7Am8fEeTR8Q8G_OTlZfejI6i55w4V3meg-UXuC_8eGy8LpQkefreakSi0WYCgxLAfRtXc5m6q-daxnkBg; todoistd=\"7HOZH/kO7vsLfM0qxFUsBxONHfk=?pCHK=gASVJAAAAAAAAACMIGU1OWM5NDllMjY2NDYxZTk3MTBkMGQ3YTFkNWJhZTQ0lC4=&user_id=gASVBgAAAAAAAABKWOcwAy4=\"; device_id=b75a4534-647a-4044-9116-1c4398e1c20a; _dd_s=logs=1&id=5b35278f-1d07-43d4-8bdc-7a8aa20f49af&created=1744872330385&expire=1744874633281; _ga_L1YQDZCTV5=GS1.1.1744872327.3.1.1744873733.17.0.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{randomProjectName}}\",\r\n    \"parent_id\": null,\r\n    \"color\": \"{{randomColor}}\",\r\n    \"is_favorite\": true,\r\n    \"view_style\": \"list\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/projects",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус код — 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// const jsonData = pm.response.json();\r",
+									"\r",
+									"// // Перевірка, що повернувся об'єкт, а не масив\r",
+									"// pm.test(\"Відповідь містить один об'єкт проєкту\", function () {\r",
+									"//     pm.expect(jsonData).to.be.an(\"object\");\r",
+									"// });\r",
+									"\r",
+									"// // Перевірка, що ID у відповіді відповідає збереженому\r",
+									"// pm.test(\"ID проєкту відповідає очікуваному\", function () {\r",
+									"//     const expectedId = pm.collectionVariables.get(\"project_id\");\r",
+									"//     pm.expect(jsonData.id).to.eql(expectedId);\r",
+									"// });\r",
+									"\r",
+									"// // Перевірка наявності ключових полів\r",
+									"// pm.test(\"Поля проєкту мають правильні типи\", function () {\r",
+									"//     pm.expect(jsonData).to.have.property(\"id\").that.is.a(\"string\");\r",
+									"//     pm.expect(jsonData).to.have.property(\"name\").that.is.a(\"string\");\r",
+									"//     pm.expect(jsonData).to.have.property(\"color\").that.is.a(\"string\");\r",
+									"//     pm.expect(jsonData).to.have.property(\"comment_count\").that.is.a(\"number\");\r",
+									"//     pm.expect(jsonData).to.have.property(\"order\").that.is.a(\"number\");\r",
+									"//     pm.expect(jsonData).to.have.property(\"is_shared\").that.is.a(\"boolean\");\r",
+									"//     pm.expect(jsonData).to.have.property(\"is_favorite\").that.is.a(\"boolean\");\r",
+									"//     pm.expect(jsonData).to.have.property(\"is_inbox_project\").that.is.a(\"boolean\");\r",
+									"//     pm.expect([\"string\", \"object\"]).to.include(typeof jsonData.view_style);\r",
+									"//     pm.expect(jsonData).to.have.property(\"url\").that.is.a(\"string\");\r",
+									"// });\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{api_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/projects/{{project_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"projects",
+								"{{project_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is acceptable\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000); // < 1 сек\r",
+									"});\r",
+									"\r",
+									"// Critical time response\r",
+									"pm.test(\"Response did not exceed 15 seconds (timeout limit)\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(15000);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{api_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"updated test project\",\r\n  \"color\": \"green\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/projects/{{project_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"projects",
+								"{{project_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Проект успішно видалений\", () => {\r",
+									"    // Перевірка, що відповідь містить статус 204 (No Content), що означає успішне видалення\r",
+									"    pm.response.to.have.status(204);\r",
+									"    \r",
+									"    // Логування для перевірки результатів\r",
+									"    console.log(`Project with ID ${pm.collectionVariables.get(\"project_id\")} successfully deleted.`);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is acceptable\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000); // < 1 сек\r",
+									"});\r",
+									"\r",
+									"// Critical time response\r",
+									"pm.test(\"Response did not exceed 15 seconds (timeout limit)\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(15000);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{api_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/projects/{{project_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"projects",
+								"{{project_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "api_token",
+			"value": "3a4b2b6413c04c4175fc0f743a818a6b22b307ef",
+			"type": "string"
+		},
+		{
+			"key": "base_url",
+			"value": "https://api.todoist.com/rest/v2",
+			"type": "string"
+		},
+		{
+			"key": "project_id",
+			"value": ""
+		},
+		{
+			"key": "task_id",
+			"value": ""
+		},
+		{
+			"key": "randomColor",
+			"value": ""
+		},
+		{
+			"key": "randomProjectName",
+			"value": ""
+		}
+	]
+}
